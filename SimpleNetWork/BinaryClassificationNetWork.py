@@ -11,8 +11,8 @@ import torch.nn.functional as F
 #统计分数
 from sklearn.metrics import accuracy_score
 
-#生成300个点的数据集，返回的结果是一个包含两个元素的元组 (X, y),X是点，y是x的分类
-X, y =  sklearn.datasets.make_moons(300, noise=0.2)
+#生成200个点的数据集，返回的结果是一个包含两个元素的元组 (X, y),X是点，y是x的分类
+X, y =  sklearn.datasets.make_moons(200, noise = 0.2)
 
 save_path = "/data/wangweicheng/ModelLearning/SimpleNetWork"
 plt.scatter(X[:,0],X[:,1],s=40,c=y,cmap=plt.cm.Spectral)
@@ -56,7 +56,7 @@ class BinaryClassifier(nn.Module):
 
 
 #初始化模型
-model = BinaryClassifier(2, 3, 2)
+model = BinaryClassifier(2, 5, 2)
 #定义损失函数，用于衡量模型预测结果与真实标签之间的差异。
 loss_criterion = nn.CrossEntropyLoss()
 #定义优化器，优化器（optimizer）用于更新模型的参数，以最小化损失函数并提高模型的性能
@@ -64,7 +64,7 @@ loss_criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.01)
 
 #训练的次数
-epochs = 5000
+epochs = 10000
 #存储loss
 losses = []
 
@@ -75,7 +75,7 @@ for i in range(epochs):
     loss = loss_criterion(y_pred, y)
     #添加当前的损失到losses中
     losses.append(loss.item())
-    #清楚之前的梯度
+    #清除之前的梯度
     optimizer.zero_grad()
     #反向传播更新参数
     loss.backward()
@@ -106,7 +106,7 @@ def plot_decision_boundary(pred_func,X,y):
     # 将预测结果 Z 重塑为与点网格 xx 相同的形状
     Z = Z.reshape(xx.shape)
     # 画出图像，绘制等高线图的代码
-    plt.contourf(xx, yy, Z, cmap=plt.cm.YlGnBu)
+    plt.contourf(xx, yy, Z, cmap=plt.cm.YlOrBr)
     plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.binary)
     plt.savefig(f'{save_path}/dataout.png')
     
